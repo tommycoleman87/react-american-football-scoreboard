@@ -9,12 +9,14 @@ function App() {
   const [awayScore, setAwayScore] = useState(0);
   const [quarter, setQuarter] = useState(1);
   const [yardsToGo, setYards] = useState(0);
+  const [down, setDown] = useState(1);
+  const [ballOn, setBallOn] = useState(0);
 
   const scoreHandler = (team, typeOfScore) => {
     if(team === 'Lions') {
       switch(typeOfScore === 'touchDown') {
         case true: 
-        return setHomeScore(homeScore + 6);
+        return setHomeScore(homeScore + 7);
         case false: 
         return setHomeScore(homeScore + 3);
         default: 
@@ -23,7 +25,7 @@ function App() {
     } else if(team === 'Tigers') {
       switch(typeOfScore === 'touchDown') {
         case true: 
-        return setAwayScore(awayScore + 6);
+        return setAwayScore(awayScore + 7);
         case false: 
         return setAwayScore(awayScore + 3);
         default: 
@@ -38,6 +40,13 @@ function App() {
     console.log(event.target.value.length)
     if(event.target.value <= 10 && event.target.value.length > 0) {
     return setYards(event.target.value)
+  }
+  }
+
+  const ballOnHandler = (event) => {
+    console.log(event.target.value.length)
+    if(event.target.value <= 100 && event.target.value.length > 0) {
+    return setBallOn(event.target.value)
   }
   }
 
@@ -58,7 +67,7 @@ function App() {
             <div className="away__score">{awayScore}</div>
           </div>
         </div>
-        <BottomRow quarter={quarter} yardsToGo={yardsToGo}/>
+        <BottomRow quarter={quarter} yardsToGo={yardsToGo} down={down} ballOn={ballOn}/>
       </section>
       <section className="buttons">
         <div className="homeButtons">
@@ -71,12 +80,14 @@ function App() {
           <button className="awayButtons__fieldGoal" onClick={() => scoreHandler('Tigers', 'fieldGoal')}>Away Field Goal</button>
         </div>
         <div className="bottomButtons">
-          <button className="downButton" onClick={() => setQuarter(quarter < 4 ? quarter + 1 : quarter - 3)}>Change Downs</button>
+          <button className="downButton" onClick={() => setDown(down < 4 ? down + 1 : down - 3)}>Change Downs</button>
           <button className="quarterButton" onClick={() => setQuarter(quarter < 4 ? quarter + 1 : quarter - 3)}>Change Quarter</button>
         </div>
         <div className="bottomInputs">
+          <h3>Change Yards to Go</h3>
           <input className="yardsToGo" type="number" onChange={(event) => yardsToGoHandler(event)}/>
-          <button className="ballOnButton" onClick={() => setQuarter(quarter < 4 ? quarter + 1 : quarter - 3)}>Change Ball On</button>
+          <h3>Change Ball On</h3>
+          <input className="ballOnButton" onChange={(event) => ballOnHandler(event)} />
         </div>
         
       </section>
