@@ -62,7 +62,7 @@ function App() {
             return minutes;
           }
         })
-      }, 10);
+      }, 1000);
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
     }
