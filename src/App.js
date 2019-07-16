@@ -34,25 +34,35 @@ function App() {
       interval = setInterval(() => {
         setSeconds(seconds => {
           if(seconds === 0) {
-            seconds = 9;
-            if(tenSeconds === 0){
-              setTenSeconds(5);
-                if(minutes <= 10) {
-                   setMinutes('0' + (minutes - 1))
-                   return minutes;
-                } else {
-                  setMinutes(minutes - 1)
-                  return minutes;
-                }
-            } else {
-              setTenSeconds(tenSeconds - 1)
-            }
-          return seconds;
+             return seconds = 9;
           } else {
-            return seconds = seconds - 1;
+            seconds = seconds - 1;
+            return seconds;
           }
         });
-      }, 1000);
+        setTenSeconds(tenSeconds => {
+          if(seconds === 0 && tenSeconds === 0){
+            tenSeconds = 5;
+            return tenSeconds;
+          } else if(seconds === 0) {
+           tenSeconds = tenSeconds - 1;
+           return tenSeconds;
+          } else {
+            return tenSeconds;
+          }
+        });
+        setMinutes(minutes => {
+          if(tenSeconds === 0 && seconds === 0 && minutes <= 10){
+            minutes = '0' + (minutes - 1);
+            return minutes;
+          } else if(tenSeconds === 0 && seconds === 0) {
+            minutes = minutes - 1;
+            return minutes;
+          } else {
+            return minutes;
+          }
+        })
+      }, 10);
     } else if (!isActive && seconds !== 0) {
       clearInterval(interval);
     }
@@ -207,3 +217,24 @@ function App() {
 }
 
 export default App;
+
+
+/* {
+          if(seconds === 0) {
+            seconds = 9;
+            if(tenSeconds === 0){
+              setTenSeconds(5);
+                if(minutes <= 10) {
+                   setMinutes('0' + (minutes - 1))
+                   return minutes;
+                } else {
+                  setMinutes(minutes - 1)
+                  return minutes;
+                }
+            } else {
+              setTenSeconds(tenSeconds - 1)
+            }
+          return seconds;
+          } else {
+            return seconds = seconds - 1;
+          }*/
