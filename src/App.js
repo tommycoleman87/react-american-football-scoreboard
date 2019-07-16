@@ -1,7 +1,8 @@
 //TODO: STEP 1 - Import the useState hook.
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
 import BottomRow from "./BottomRow";
+
 
 function App() {
   //TODO: STEP 2 - Establish your applictaion's state with some useState hooks.  You'll need one for the home score and another for the away score.
@@ -11,6 +12,56 @@ function App() {
   const [yardsToGo, setYards] = useState(0);
   const [down, setDown] = useState(1);
   const [ballOn, setBallOn] = useState(0);
+  const [minutes, setMinutes] = useState(15);
+  const [tenSeconds, setTenSeconds] = useState(0)
+  const [seconds, setSeconds] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+
+  function toggle() {
+    setIsActive(!isActive);
+  }
+
+  function reset() {
+    setSeconds(0);
+    setTenSeconds(0);
+    setMinutes(15);
+    setIsActive(false);
+  }
+
+  useEffect(() => {
+    let interval = null;
+    if (isActive) {
+      interval = setInterval(() => {
+        setSeconds(seconds => {
+          if(seconds === 0) {
+            seconds = 9;
+            if(tenSeconds === 0){
+              setTenSeconds(5);
+                if(minutes <= 10) {
+                   setMinutes('0' + (minutes - 1))
+                   return minutes;
+                } else {
+                  setMinutes(minutes - 1)
+                  return minutes;
+                }
+            } else {
+              setTenSeconds(tenSeconds - 1)
+            }
+          return seconds;
+          } else {
+            return seconds = seconds - 1;
+          }
+        });
+      }, 1000);
+    } else if (!isActive && seconds !== 0) {
+      clearInterval(interval);
+    }
+    if(seconds === 0 && tenSeconds === 0 && minutes == 0) {
+      clearInterval(interval);
+    }
+    return () => clearInterval(interval);
+  });
+ 
 
   const scoreHandler = (team, typeOfScore) => {
     if (team === "Lions") {
@@ -57,6 +108,8 @@ function App() {
     
   }
 
+ 
+
   return (
     <div className="container">
       <section className="scoreboard">
@@ -68,7 +121,7 @@ function App() {
 
             <div className="home__score">{homeScore}</div>
           </div>
-          <div className="timer">00:03</div>
+          <div className="timer" >{minutes}:{tenSeconds}{seconds}</div>
           <div className="away">
             <h2 className="away__name">Tigers</h2>
             <div className="away__score">{awayScore}</div>
@@ -124,6 +177,12 @@ function App() {
           >
             Change Quarter
           </button>
+          <button className="quarterButton"onClick={(event) => toggle(event)}>
+            Timer
+          </button>
+          <button className="quarterButton"onClick={(event) => reset(event)}>
+            Reset timer
+          </button>
         </div>
         <div className="bottomInputs">
           <h3>Change Yards to Go</h3>
@@ -131,12 +190,14 @@ function App() {
           <input
             className="yardsToGo"
             type="number"
+            placeholder={yardsToGo}
           />
           </form>
           <h3>Change Ball On</h3>
           <form onSubmit={(event) => handleSubmit(event)}>
           <input
-            className="ballOnButton"
+            className="ballOn" 
+            placeholder={ballOn}
           />
           </form>
         </div>

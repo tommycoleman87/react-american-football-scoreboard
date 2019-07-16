@@ -117,7 +117,8 @@
 .homeButtons__fieldGoal,
 .awayButtons__touchdown,
 .awayButtons__fieldGoal,
-.quarterButton, .downButton {
+.quarterButton, .downButton,
+.yardsToGo, .ballOn {
   margin: 1rem;
   border-radius: 4px;
 }
